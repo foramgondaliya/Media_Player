@@ -34,10 +34,10 @@ class _CarouselComponentState extends State<CarouselComponent> {
                 height: 250,
                 enlargeCenterPage: true,
                 autoPlay: true,
+                viewportFraction: 0.6,
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enableInfiniteScroll: true,
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
-                viewportFraction: 0.6,
+                autoPlayAnimationDuration: Duration(milliseconds: 600),
                 initialPage: sliderIndex,
                 onPageChanged: (val, _) {
                   setState(() {
@@ -56,7 +56,7 @@ class _CarouselComponentState extends State<CarouselComponent> {
                 );
               }).toList(),
             ),
-            //SizedBox(height: 10),
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: topSongs.map((e) {
@@ -87,12 +87,9 @@ class _CarouselComponentState extends State<CarouselComponent> {
             CarouselSlider(
               options: CarouselOptions(
                 height: 150,
-                //enlargeCenterPage: true,
-                //autoPlay: true,
-                autoPlayCurve: Curves.fastOutSlowIn,
                 enableInfiniteScroll: true,
                 autoPlayAnimationDuration: Duration(milliseconds: 800),
-                viewportFraction: 0.45,
+                viewportFraction: 0.40,
                 initialPage: sliderIndex,
                 onPageChanged: (val, _) {
                   setState(() {
@@ -117,9 +114,7 @@ class _CarouselComponentState extends State<CarouselComponent> {
                         child: IconButton(
                           icon: Icon(Icons.play_circle_filled,
                               size: 50, color: Colors.white),
-                          onPressed: () {
-                            // Handle play button press here
-                          },
+                          onPressed: () {},
                         ),
                       ),
                     ),
@@ -169,11 +164,6 @@ class _CarouselComponentState extends State<CarouselComponent> {
             CarouselSlider(
               options: CarouselOptions(
                 height: 150,
-                //enlargeCenterPage: true,
-                //autoPlay: true,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                //enableInfiniteScroll: true,
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
                 viewportFraction: 0.40,
                 initialPage: sliderIndex,
                 onPageChanged: (val, _) {
@@ -187,7 +177,7 @@ class _CarouselComponentState extends State<CarouselComponent> {
                   children: [
                     Container(
                       alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width / 1.9,
+                      width: MediaQuery.of(context).size.width / 1.2,
                       child: Image.network(
                         imageUrl,
                         fit: BoxFit.cover,
@@ -199,9 +189,7 @@ class _CarouselComponentState extends State<CarouselComponent> {
                         child: IconButton(
                           icon: Icon(Icons.play_circle_filled,
                               size: 50, color: Colors.white),
-                          onPressed: () {
-                            // Handle play button press here
-                          },
+                          onPressed: () {},
                         ),
                       ),
                     ),

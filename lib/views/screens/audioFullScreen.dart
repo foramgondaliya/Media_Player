@@ -1,7 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:media_player_app/Modal/audio.dart';
-import 'package:media_player_app/utils/alllData.dart';
+import 'package:media_player_app/utils/audioData.dart';
 
 class FullScreenAudioPlayer extends StatefulWidget {
   final AudioItem? audioItem;

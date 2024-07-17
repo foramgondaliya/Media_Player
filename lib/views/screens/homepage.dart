@@ -24,102 +24,47 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: Text(
+          'Home Page',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+        ),
+        backgroundColor: Colors.deepPurple,
         bottom: TabBar(
           controller: tabController,
+          indicatorColor: Colors.amber,
+          labelColor: Colors.amber,
+          unselectedLabelColor: Colors.white70,
           tabs: [
             Tab(
               text: "Carousel",
+              icon: Icon(Icons.image),
             ),
             Tab(
               text: "Audio",
+              icon: Icon(Icons.audiotrack),
             ),
             Tab(
               text: "Video",
+              icon: Icon(Icons.video_library),
             ),
           ],
         ),
       ),
-      body: TabBarView(
-        controller: tabController,
-        children: [
-          CarouselComponent(),
-          AudioPlayerScreen(),
-          VideoComponent(),
-        ],
+      body: Container(
+        color: Colors.deepPurple.shade50,
+        child: TabBarView(
+          controller: tabController,
+          children: [
+            CarouselComponent(),
+            AudioPlayerScreen(),
+            VideoComponent(),
+          ],
+        ),
       ),
-      // floatingActionButton: Row(
-      //   mainAxisAlignment: MainAxisAlignment.end,
-      //   children: [
-      //     FloatingActionButton(
-      //       onPressed: () {
-      //         if (tabController!.index > 0) {
-      //           tabController!.animateTo(tabController!.index - 1);
-      //         }
-      //       },
-      //       child: Icon(Icons.arrow_back_ios),
-      //     ),
-      //     SizedBox(
-      //       width: 20,
-      //     ),
-      //     FloatingActionButton(
-      //       onPressed: () {
-      //         if (tabController!.index < 2) {
-      //           tabController!.animateTo(tabController!.index + 1);
-      //         }
-      //       },
-      //       child: Icon(Icons.arrow_forward_ios),
-      //     )
-      //   ],
-      // ),
-      // Container(
-      //   height: 60,
-      //   color: Colors.white,
-      //   child: Column(
-      //     children: [
-      //       Row(
-      //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //         children: [
-      //           IconButton(
-      //             icon: Icon(
-      //               Icons.home,
-      //               size: 30,
-      //             ),
-      //             onPressed: () async {},
-      //           ),
-      //           IconButton(
-      //             icon: Icon(
-      //               Icons.bookmark_border,
-      //               size: 30,
-      //             ),
-      //             onPressed: () async {},
-      //           ),
-      //           IconButton(
-      //             icon: Icon(
-      //               Icons.arrow_back_ios,
-      //               size: 30,
-      //             ),
-      //             onPressed: () async {},
-      //           ),
-      //           IconButton(
-      //             icon: Icon(
-      //               Icons.refresh,
-      //               size: 30,
-      //             ),
-      //             onPressed: () async {},
-      //           ),
-      //           IconButton(
-      //             icon: Icon(
-      //               Icons.arrow_forward_ios,
-      //               size: 30,
-      //             ),
-      //             onPressed: () async {},
-      //           ),
-      //         ],
-      //       ),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }

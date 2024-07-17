@@ -1,7 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:media_player_app/Modal/audio.dart';
-import 'package:media_player_app/utils/alllData.dart';
+import 'package:media_player_app/utils/audioData.dart';
 
 class AudioPlayerScreen extends StatefulWidget {
   @override
@@ -52,62 +52,82 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          SizedBox(height: 10),
-          Expanded(
-            child: ListView(
-              children: popularItems
-                  .map(
-                    (e) => GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          'detailPage',
-                          arguments: e,
-                        );
-                      },
-                      child: Card(
-                        elevation: 3,
-                        color: Colors.grey.shade400,
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 16,
-                        ),
-                        child: ListTile(
-                          title: Text(
-                            "${e['title']}",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
+      // appBar: AppBar(
+      //   title: Text(
+      //     "Audio Player",
+      //     style: TextStyle(
+      //       color: Colors.white,
+      //       fontWeight: FontWeight.bold,
+      //       fontSize: 24,
+      //     ),
+      //   ),
+      //   //backgroundColor: Colors.deepPurple,
+      // ),
+      body: Container(
+        color: Colors.deepPurple.shade50,
+        child: Column(
+          children: [
+            SizedBox(height: 10),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                children: popularItems
+                    .map(
+                      (e) => GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            'detailPage',
+                            arguments: e,
+                          );
+                        },
+                        child: Card(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          subtitle: Text(
-                            "${e['artist']}",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black54,
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          color: Colors.white,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 16,
                             ),
-                          ),
-                          trailing: IconButton(
-                            onPressed: () {
-                              togglePlayPause(e['audioPath']);
-                            },
-                            icon: Icon(
-                              isPlaying && currentAudioPath == e['audioPath']
-                                  ? Icons.pause
-                                  : Icons.play_arrow,
+                            title: Text(
+                              "${e['title']}",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.deepPurple,
+                              ),
                             ),
-                            color: Colors.black,
+                            subtitle: Text(
+                              "${e['artist']}",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.deepPurple.shade300,
+                              ),
+                            ),
+                            trailing: IconButton(
+                              onPressed: () {
+                                togglePlayPause(e['audioPath']);
+                              },
+                              icon: Icon(
+                                isPlaying && currentAudioPath == e['audioPath']
+                                    ? Icons.pause
+                                    : Icons.play_arrow,
+                              ),
+                              color: Colors.deepPurple,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                  .toList(),
+                    )
+                    .toList(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

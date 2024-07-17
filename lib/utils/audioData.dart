@@ -10,7 +10,8 @@ List<Map<String, dynamic>> popularItems = [
   {
     'title': "Ve Kamleya",
     'artist': "Bring Me The Earth",
-    'imagePath': "assets/maxresdefault.jpg",
+    'imagePath':
+        "https://www.pagalworld.online/GpE34Kg9Gq/113762/151639-ve-kamleya-arijit-singh-mp3-song-300.jpg",
     'audioPath': "assets/Ve Kamleya - Arijit Singh.mp3",
   },
   {
@@ -35,7 +36,7 @@ List<Map<String, dynamic>> popularItems = [
     'title': "Vhalam",
     'artist': "Bring Me The Earth",
     'imagePath': "assets/maxresdefault.jpg",
-    'audioPath': "ssets/Kabootar Ja Ja Ja.mp3",
+    'audioPath': "assets/Kabootar Ja Ja Ja.mp3",
   },
   {
     'title': "Shiv Tandav",

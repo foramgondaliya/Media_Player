@@ -8,8 +8,8 @@ class VideoDetailPage extends StatefulWidget {
 }
 
 class _VideoDetailPageState extends State<VideoDetailPage> {
-  late VideoPlayerController _controller;
-  late ChewieController _chewieController;
+  late VideoPlayerController controller;
+  late ChewieController chewieController;
 
   @override
   void initState() {
@@ -18,10 +18,10 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   }
 
   Future<void> loadVideo() async {
-    _controller = VideoPlayerController.asset("assets/videos/sample.mp4");
-    await _controller.initialize();
-    _chewieController = ChewieController(
-      videoPlayerController: _controller,
+    controller = VideoPlayerController.asset("assets/videos/sample.mp4");
+    await controller.initialize();
+    chewieController = ChewieController(
+      videoPlayerController: controller,
       autoPlay: false,
     );
 
@@ -30,8 +30,8 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
 
   @override
   void dispose() {
-    _controller.dispose();
-    _chewieController.dispose();
+    controller.dispose();
+    chewieController.dispose();
     super.dispose();
   }
 
@@ -39,15 +39,9 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   Widget build(BuildContext context) {
     final data =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-    if (data == null) {
-      return Scaffold(
-        body: Center(child: Text('No data available')),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(data['title'] ?? 'No Title'),
+        title: Text(data?['title']),
       ),
       body: Center(
         child: Column(
@@ -59,11 +53,11 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                 height: 280,
                 width: double.infinity,
                 //color: Colors.blue,
-                child: _controller.value.isInitialized
+                child: controller.value.isInitialized
                     ? AspectRatio(
                         aspectRatio: 8 / 6,
                         child: Chewie(
-                          controller: _chewieController,
+                          controller: chewieController,
                         ),
                       )
                     : Center(
