@@ -1,7 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:media_player_app/utils/videoData.dart';
 import 'package:video_player/video_player.dart';
+import 'package:media_player_app/utils/videoData.dart'; // Ensure this import is correct
 
 class VideoComponent extends StatefulWidget {
   const VideoComponent({super.key});
@@ -11,8 +11,9 @@ class VideoComponent extends StatefulWidget {
 }
 
 class _VideoComponentState extends State<VideoComponent> {
-  late VideoPlayerController videoPlayerController;
-  late ChewieController chewieController;
+  VideoPlayerController? videoPlayerController;
+  ChewieController? chewieController;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -24,19 +25,22 @@ class _VideoComponentState extends State<VideoComponent> {
 
   Future<void> loadVideo(String videoPath) async {
     videoPlayerController = VideoPlayerController.asset(videoPath);
-    await videoPlayerController.initialize();
+    await videoPlayerController!.initialize();
 
     chewieController = ChewieController(
-      videoPlayerController: videoPlayerController,
+      videoPlayerController: videoPlayerController!,
       autoPlay: false,
     );
-    setState(() {});
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   void dispose() {
-    videoPlayerController.dispose();
-    chewieController.dispose();
+    videoPlayerController?.dispose();
+    chewieController?.dispose();
     super.dispose();
   }
 
@@ -45,101 +49,102 @@ class _VideoComponentState extends State<VideoComponent> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          videoPlayerController.value.isInitialized
+          isLoading
               ? Padding(
-                  padding: const EdgeInsets.only(top: 20, right: 16, left: 16),
-                  child: Column(
-                      children: VideoItems.map(
-                    (e) => Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed('videoDetailPage', arguments: e);
-                        },
-                        child: Card(
-                          elevation: 3,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  height: 120,
-                                  color: Colors.white,
-                                  child: AspectRatio(
-                                    aspectRatio:
-                                        videoPlayerController.value.aspectRatio,
-                                    child: VideoPlayer(videoPlayerController),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 3,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 150,
-                                        //color: Colors.amber,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  "${e['title']},",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 20),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  "${e['artist']},",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 18),
-                                                ),
-                                              ],
-                                            ),
-                                            Column(
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "${e['description']}",
-                                                      style: TextStyle(
-                                                          fontSize: 15),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ).toList()),
-                )
-              : Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: Center(
                     child: CircularProgressIndicator(),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(top: 20, right: 16, left: 16),
+                  child: Column(
+                    children: VideoItems.map(
+                      (e) => Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                              'videoDetailPage',
+                              arguments: e,
+                            );
+                          },
+                          child: Card(
+                            elevation: 3,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    height: 120,
+                                    color: Colors.white,
+                                    child: AspectRatio(
+                                      aspectRatio: videoPlayerController
+                                              ?.value.aspectRatio ??
+                                          16 / 9,
+                                      child: videoPlayerController != null
+                                          ? VideoPlayer(videoPlayerController!)
+                                          : Center(child: Text('No video')),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 20),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: 150,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "${e['title']},",
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "${e['artist']},",
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                "${e['description']}",
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ).toList(),
                   ),
                 ),
         ],

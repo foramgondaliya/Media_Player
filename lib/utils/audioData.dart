@@ -10,26 +10,25 @@ List<Map<String, dynamic>> popularItems = [
   {
     'title': "Ve Kamleya",
     'artist': "Bring Me The Earth",
-    'imagePath':
-        "https://www.pagalworld.online/GpE34Kg9Gq/113762/151639-ve-kamleya-arijit-singh-mp3-song-300.jpg",
+    'imagePath': "assets/nadaniya.jpg",
     'audioPath': "assets/Ve Kamleya - Arijit Singh.mp3",
   },
   {
     'title': "O Re Piya",
     'artist': "Bring Me The Earth",
-    'imagePath': "assets/maxresdefault.jpg",
+    'imagePath': "assets/orepiya.jpg",
     'audioPath': "assets/O Re Piya - Javed Ali.mp3",
   },
   {
     'title': "Nadaaniyan",
     'artist': "Bring Me The Earth",
-    'imagePath': "assets/maxresdefault.jpg",
+    'imagePath': "assets/hariyan.jpg",
     'audioPath': "assets/Nadaaniyan.mp3",
   },
   {
     'title': "Dekha Tenu",
     'artist': "Bring Me The Earth",
-    'imagePath': "assets/maxresdefault.jpg",
+    'imagePath': "assets/dekhatenu.jpg",
     'audioPath': "assets/Dekhha Tenu.mp3",
   },
   {
@@ -41,13 +40,13 @@ List<Map<String, dynamic>> popularItems = [
   {
     'title': "Shiv Tandav",
     'artist': "Bring Me The Earth",
-    'imagePath': "assets/maxresdefault.jpg",
+    'imagePath': "assets/hariyan.jpg",
     'audioPath': "assets/Nadaaniyan.mp3",
   },
   {
-    'title': "Humdard",
+    'title': "Dekha Tenu",
     'artist': "Bring Me The Earth",
-    'imagePath': "assets/maxresdefault.jpg",
+    'imagePath': "assets/dekhatenu.jpg",
     'audioPath': "assets/Dekhha Tenu.mp3",
   },
   {

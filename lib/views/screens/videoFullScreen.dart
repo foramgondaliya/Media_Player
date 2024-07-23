@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
+import 'package:video_player/video_player.dart';
 
 class VideoDetailPage extends StatefulWidget {
   @override
@@ -8,62 +8,79 @@ class VideoDetailPage extends StatefulWidget {
 }
 
 class _VideoDetailPageState extends State<VideoDetailPage> {
-  late VideoPlayerController controller;
-  late ChewieController chewieController;
+  late VideoPlayerController _videoPlayerController;
+  late ChewieController _chewieController;
+  bool _isVideoInitialized = false;
 
   @override
-  void initState() {
-    super.initState();
-    loadVideo();
-  }
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
-  Future<void> loadVideo() async {
-    controller = VideoPlayerController.asset("assets/videos/sample.mp4");
-    await controller.initialize();
-    chewieController = ChewieController(
-      videoPlayerController: controller,
-      autoPlay: false,
-    );
-
-    setState(() {});
+    if (args != null) {
+      final videoPath = args['videoPath'] as String?;
+      if (videoPath != null) {
+        _videoPlayerController = VideoPlayerController.asset(videoPath);
+        _videoPlayerController.initialize().then((_) {
+          _chewieController = ChewieController(
+            videoPlayerController: _videoPlayerController,
+            autoPlay: true,
+            looping: false,
+          );
+          setState(() {
+            _isVideoInitialized = true;
+          });
+        });
+      }
+    }
   }
 
   @override
   void dispose() {
-    controller.dispose();
-    chewieController.dispose();
+    _videoPlayerController.dispose();
+    _chewieController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final data =
+    final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final title = args?['title'] ?? 'Video';
+    final artist = args?['artist'] ?? 'Unknown';
+    final description = args?['description'] ?? 'No description available';
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(data?['title']),
+        title: Text(title),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 100),
-              child: Container(
+            if (_isVideoInitialized)
+              Container(
                 height: 280,
                 width: double.infinity,
-                //color: Colors.blue,
-                child: controller.value.isInitialized
-                    ? AspectRatio(
-                        aspectRatio: 8 / 6,
-                        child: Chewie(
-                          controller: chewieController,
-                        ),
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                child: Chewie(
+                  controller: _chewieController,
+                ),
+              )
+            else
+              Center(
+                child: CircularProgressIndicator(),
               ),
+            SizedBox(height: 16),
+            Text(
+              'Artist: $artist',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Description: $description',
+              style: TextStyle(fontSize: 16),
             ),
           ],
         ),

@@ -1,7 +1,8 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:media_player_app/Modal/audio.dart';
-import 'package:media_player_app/utils/audioData.dart';
+import 'package:media_player_app/provider/player_Provider.dart';
+import 'package:provider/provider.dart';
 
 class FullScreenAudioPlayer extends StatefulWidget {
   final AudioItem? audioItem;
@@ -13,39 +14,20 @@ class FullScreenAudioPlayer extends StatefulWidget {
 }
 
 class _FullScreenAudioPlayerState extends State<FullScreenAudioPlayer> {
-  final AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.audioItem != null) {
-      assetsAudioPlayer.open(
-        Audio(widget.audioItem!.audioPath),
-        autoStart: true,
-        showNotification: true,
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    assetsAudioPlayer.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> data =
+    final data =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final String title = widget.audioItem?.title ?? 'No Title';
-    final String artist = widget.audioItem?.artist ?? 'No Artist';
+    final playerProvider = Provider.of<PlayerProvider>(context);
+    final String title = ("${data['title']}") ?? 'No Title';
+    final String artist = ("${data['artist']}") ?? 'No Artist';
     final String imagePath =
-        widget.audioItem?.imagePath ?? 'assets/maxresdefault.jpg';
+        ("${data['imagePath']}") ?? 'assets/maxresdefault.jpg';
     final String audioPath = widget.audioItem?.audioPath ?? '';
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text("${data['title']}"),
       ),
       body: Center(
         child: Column(
@@ -59,11 +41,11 @@ class _FullScreenAudioPlayerState extends State<FullScreenAudioPlayer> {
             ),
             SizedBox(height: 20),
             Text(
-              "${data['title']}",
+              title,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Text(
-              "${data['artist']}",
+              artist,
               style: TextStyle(fontSize: 18, color: Colors.grey),
             ),
             SizedBox(height: 20),
@@ -75,51 +57,42 @@ class _FullScreenAudioPlayerState extends State<FullScreenAudioPlayer> {
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon: Icon(Icons.play_arrow),
+                  icon: Icon(playerProvider.isPlaying &&
+                          playerProvider.currentAudioPath == audioPath
+                      ? Icons.pause
+                      : Icons.play_arrow),
                   onPressed: () {
-                    assetsAudioPlayer.play();
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.pause),
-                  onPressed: () {
-                    assetsAudioPlayer.pause();
+                    playerProvider.togglePlayPause(audioPath);
                   },
                 ),
                 IconButton(
                   icon: Icon(Icons.skip_next),
-                  onPressed: () {
-                    assetsAudioPlayer.next();
-                  },
+                  onPressed: () {},
                 ),
               ],
             ),
-            StreamBuilder(
-              stream: assetsAudioPlayer.currentPosition,
-              builder: (context, snapshot) {
-                Duration? data = snapshot.data as Duration?;
-                String currentPosition = data.toString().split('.')[0];
-                return StreamBuilder(
-                  stream: assetsAudioPlayer.current,
-                  builder: (context, ss) {
-                    Playing? playing = ss.data as Playing?;
+            StreamBuilder<Duration>(
+              stream: playerProvider.currentPosition,
+              builder: (context, positionSnapshot) {
+                Duration? currentPosition = positionSnapshot.data;
+                return StreamBuilder<Playing?>(
+                  stream: playerProvider.current,
+                  builder: (context, playingSnapshot) {
+                    Playing? playing = playingSnapshot.data;
                     Duration? totalDuration = playing?.audio.duration;
-                    String totalDurationString =
-                        totalDuration.toString().split('.')[0];
                     return Column(
                       children: [
                         Slider(
                           min: 0,
-                          max: totalDuration == null
-                              ? 0
-                              : totalDuration.inSeconds.toDouble(),
-                          value: data == null ? 0 : data.inSeconds.toDouble(),
+                          max: totalDuration?.inSeconds.toDouble() ?? 0,
+                          value: currentPosition?.inSeconds.toDouble() ?? 0,
                           onChanged: (val) {
-                            assetsAudioPlayer
-                                .seek(Duration(seconds: val.toInt()));
+                            playerProvider.seek(Duration(seconds: val.toInt()));
                           },
                         ),
-                        Text("$currentPosition / $totalDurationString"),
+                        Text(
+                          "${currentPosition?.toString().split('.')[0] ?? '00:00'} / ${totalDuration?.toString().split('.')[0] ?? '00:00'}",
+                        ),
                       ],
                     );
                   },

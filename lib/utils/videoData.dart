@@ -6,9 +6,9 @@ List<Map<String, dynamic>> VideoItems = [
     'description': "A captivating song from the movie Kaabil.",
   },
   {
-    'title': "Taub Tauba",
+    'title': "Zor ki barsat hui",
     'artist': "Bring Me The Earth",
-    'videoPath': "assets/videos/Tauba_Tauba.mp4",
+    'videoPath': "assets/videos/Awari.mp4",
     'description': "An energetic and fun track from Taub Tauba.",
   },
   {
@@ -18,9 +18,9 @@ List<Map<String, dynamic>> VideoItems = [
     'description': "A soulful melody from the movie Aashiqui 2.",
   },
   {
-    'title': "Mere Nishaan",
+    'title': "Gumnnam hai koi",
     'artist': "Bring Me The Earth",
-    'videoPath': "assets/videos/sample4.mp4",
+    'videoPath': "assets/videos/sample.mp4",
     'description': "An emotional and touching song by Bring Me The Earth.",
   },
   {
@@ -30,9 +30,9 @@ List<Map<String, dynamic>> VideoItems = [
     'description': "A soulful melody from the movie Aashiqui 2.",
   },
   {
-    'title': "Mere Nishaan",
+    'title': "Awari",
     'artist': "Bring Me The Earth",
-    'videoPath': "assets/videos/sample4.mp4",
+    'videoPath': "assets/videos/Awari.mp4",
     'description': "An emotional and touching song by Bring Me The Earth.",
   },
 ];
